@@ -17,7 +17,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/schedule/');
+                const response = await axios.get('/schedules');
                 setData(response.data);
             } catch (error) {
                 console.error('Ошибка при получении данных:', error);
