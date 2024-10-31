@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             time: DataTypes.STRING,
             message: DataTypes.STRING,
             frequency: DataTypes.STRING,
-            next_run_date: DataTypes.DATE // надо для работы расписаний
+            next_run_date: DataTypes.DATE 
         },
         {
             sequelize,
