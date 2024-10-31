@@ -25,7 +25,7 @@ function App() {
       element: <Root user={user} setUser={setUser} />,
       children: [
          {
-          path: '/dashboard',
+          path: '/',
           element: <MainPage user={user}/>,
         },
         {
