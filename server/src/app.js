@@ -2,6 +2,7 @@ require('dotenv').config();
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const express = require('express');
 const apiRouter = require('./routers/api.router');
@@ -13,7 +14,11 @@ const corsConfig = {
   //! Access-Control-Allow-Origin
   origin: ['http://localhost:5173', 'http://localhost:4173'],
   credentials: true,
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization',
 };
+
+app.use(bodyParser.json());
 
 app.use(cors(corsConfig));
 app.use(cookieParser());

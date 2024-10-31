@@ -21,6 +21,7 @@ export default function Navbar({ user, setUser }) {
     <div className={styles.wrapper}>
       <div className={styles.left}>
         <Link to='/'><img src={homeIcon} alt="На главную" height="35"/></Link>
+        <Link to='/proverka'>Проверка</Link>
       </div>
       <div className={styles.right}>
         {user?.email ? (
