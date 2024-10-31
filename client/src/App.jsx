@@ -4,6 +4,7 @@ import Root from './Root';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import SigninPage from './pages/SigninPage/SigninPage';
 import SignupPage from './pages/SignupPage/SignupPage';
+import MainPage from './pages/MainPage/MainPage'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axiosInstance, { setAccessToken } from './axiosInstance';
@@ -23,6 +24,10 @@ function App() {
       path: '/',
       element: <Root user={user} setUser={setUser} />,
       children: [
+         {
+          path: '/dashboard',
+          element: <MainPage user={user}/>,
+        },
         {
           path: '/signin',
           element: <SigninPage setUser={setUser} />,
