@@ -18,10 +18,36 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [editData, setEditData] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [channel, setChannel] = useState('');
+  const [message, setMessage] = useState('');
+  const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
     fetchSchedules();
   }, []);
+
+  // функция Леры
+const sendMessage = async (channel, message) => {
+      if (!channel || !message) {
+          setResponseMessage('Channel and message are required.');
+          return;
+    }
+
+  try {
+      const responce =  await axiosInstance.post(
+          '/', // Adjust to your server URL
+          {channel, message },
+          { headers: { 'Content-Type': 'application/json' } }
+      );
+      setResponseMessage(responce.data.message);
+      
+  } catch (error) {
+      setResponseMessage(`Error: ${error.response?.data?.error,  error.message}`);
+      console.error('Error sending message:', error);
+  }
+};
+
+
 
   const fetchSchedules = async () => {
     try {
