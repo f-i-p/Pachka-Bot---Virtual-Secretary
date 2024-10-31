@@ -10,9 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         {
             channelId: DataTypes.INTEGER,
             dayOfWeek: DataTypes.STRING,
-            time: DataTypes.DATE,
+            time: DataTypes.STRING,
             message: DataTypes.STRING,
             frequency: DataTypes.STRING,
+            next_run_date: DataTypes.DATE // надо для работы расписаний
         },
         {
             sequelize,
