@@ -48,10 +48,10 @@ export default function CreateScheduleModal() {
     <div>
       <Button variant="contained"  sx={{
     mt: 3,
-    backgroundColor: '#E66A00',
+    backgroundColor: '#ff9900',
     color: '#fff', 
     '&:hover': {
-      backgroundColor: '#E66A00',
+      backgroundColor: '#ff9900',
     },
   }} onClick={handleOpen}>
         Create New Task
