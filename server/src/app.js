@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const express = require('express');
 const apiRouter = require('./routers/api.router');
+const { startSchedules } = require('../utils/scheduler')
 
 const app = express();
 const { PORT } = process.env;
@@ -25,6 +26,8 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+startSchedules();
 
 app.use('/api/v1', apiRouter);
 
