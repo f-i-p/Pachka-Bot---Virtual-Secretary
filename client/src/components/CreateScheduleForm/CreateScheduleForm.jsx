@@ -7,10 +7,10 @@ export default function CreateScheduleModal() {
   const [channels, setChannels] = useState([]);
   const [formData, setFormData] = useState({
     channelId: '',
-    dayOfWeek: 'Monday',
+    dayOfWeek: 'Понедельник',
     time: '',
     message: '',
-    frequency: 'Daily',
+    frequency: 'ежедневно',
   });
 
   const handleOpen = () => setOpen(true);
@@ -22,7 +22,7 @@ export default function CreateScheduleModal() {
         const response = await axiosInstance.get('/channels');
         setChannels(response.data);
       } catch (error) {
-        console.error('Error fetching channels:', error);
+        console.error('Ошибка при получении каналов:', error);
       }
     };
     fetchChannels();
@@ -32,29 +32,28 @@ export default function CreateScheduleModal() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axiosInstance.post('/schedules', formData);
-      alert('Schedule created successfully');
+      alert('Таск успешно создан');
       handleClose();
     } catch (error) {
-      console.error('Error creating schedule:', error);
+      console.error('Ошибка при создании таска:', error);
     }
   };
 
   return (
     <div>
-      <Button variant="contained"  sx={{
-    mt: 3,
-    backgroundColor: '#ff9900',
-    color: '#fff', 
-    '&:hover': {
-      backgroundColor: '#ff9900',
-    },
-  }} onClick={handleOpen}>
-        Create New Task
+      <Button variant="contained" sx={{
+        mt: 3,
+        backgroundColor: '#ff9900',
+        color: '#fff', 
+        '&:hover': {
+          backgroundColor: '#ff9900',
+        },
+      }} onClick={handleOpen}>
+        Создать новый таск
       </Button>
 
       <Modal
@@ -78,18 +77,18 @@ export default function CreateScheduleModal() {
         >
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
             <Typography id="modal-title" component="h2" variant="h5" sx={{ mb: 2 }}>
-              Create New Task
+              Создать новый таск
             </Typography>
 
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="channel-label">Channel</InputLabel>
+              <InputLabel id="channel-label">Канал</InputLabel>
               <Select
                 labelId="channel-label"
                 id="channelId"
                 name="channelId"
                 value={formData.channelId}
                 onChange={handleChange}
-                label="Channel"
+                label="Канал"
                 required
               >
                 {channels.map((channel) => (
@@ -101,16 +100,16 @@ export default function CreateScheduleModal() {
             </FormControl>
 
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="dayOfWeek-label">Day of Week</InputLabel>
+              <InputLabel id="dayOfWeek-label">День недели</InputLabel>
               <Select
                 labelId="dayOfWeek-label"
                 id="dayOfWeek"
                 name="dayOfWeek"
                 value={formData.dayOfWeek}
                 onChange={handleChange}
-                label="Day of Week"
+                label="День недели"
               >
-                {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
+                {['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'].map((day) => (
                   <MenuItem key={day} value={day}>
                     {day}
                   </MenuItem>
@@ -119,7 +118,7 @@ export default function CreateScheduleModal() {
             </FormControl>
 
             <TextField
-              label="Time"
+              label="Время"
               type="time"
               name="time"
               value={formData.time}
@@ -136,7 +135,7 @@ export default function CreateScheduleModal() {
             />
 
             <TextField
-              label="Message"
+              label="Сообщение"
               name="message"
               value={formData.message}
               onChange={handleChange}
@@ -148,23 +147,26 @@ export default function CreateScheduleModal() {
             />
 
             <FormControl fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="frequency-label">Frequency</InputLabel>
+              <InputLabel id="frequency-label">Периодичность</InputLabel>
               <Select
                 labelId="frequency-label"
                 id="frequency"
                 name="frequency"
                 value={formData.frequency}
                 onChange={handleChange}
-                label="Frequency"
+                label="Периодичность"
               >
-                <MenuItem value="Daily">Daily</MenuItem>
-                <MenuItem value="Weekly">Weekly</MenuItem>
-                <MenuItem value="Monthly">Monthly</MenuItem>
+                <MenuItem value="каждые 5 секунд">каждые 5 секунд</MenuItem>
+                <MenuItem value="каждые 30 секунд">каждые 30 секунд</MenuItem>
+                <MenuItem value="каждый час">каждый час</MenuItem>
+                <MenuItem value="ежедневно">ежедневно</MenuItem>
+                <MenuItem value="ежемесячно">ежемесячно</MenuItem>
+                <MenuItem value="ежегодно">ежегодно</MenuItem>
               </Select>
             </FormControl>
 
             <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }}>
-              Create Task
+              Создать таск
             </Button>
           </Box>
         </Container>
