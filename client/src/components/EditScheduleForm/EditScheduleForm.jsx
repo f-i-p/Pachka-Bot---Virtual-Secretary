@@ -45,7 +45,7 @@ const EditScheduleModal = ({ open, onClose, schedule, onSave }) => {
           Редактировать расписание
         </Typography>
         <Box component="form" onSubmit={handleSubmit}>
-          <TextField label="ID канала" name="channelId" value={formData.channelId} disabled fullWidth sx={{ mb: 2 }} required />
+          {/* <TextField label="ID канала" name="channelId" value={formData.channelId} disabled fullWidth sx={{ mb: 2 }} required /> */}
           <TextField label="День недели" name="dayOfWeek" value={formData.dayOfWeek} onChange={handleChange} fullWidth sx={{ mb: 2 }} required />
           <TextField label="Время" name="time" type="time" value={formData.time} onChange={handleChange} fullWidth sx={{ mb: 2 }} required />
           <TextField label="Сообщение" name="message" value={formData.message} onChange={handleChange} multiline rows={4} fullWidth sx={{ mb: 2 }} required />
