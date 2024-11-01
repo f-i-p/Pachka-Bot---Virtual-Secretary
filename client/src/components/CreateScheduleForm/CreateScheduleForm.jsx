@@ -18,7 +18,7 @@ export default function CreateScheduleModal({ onTaskCreated }) {
     const [channels, setChannels] = useState([])
     const [formData, setFormData] = useState({
         channelId: 1,
-        webhookUrl: 'https://api.pachca.com/webhooks/01JBHCDSR8MK6Q5K11AEZ1MDQY',
+        webhookUrl: '',
         dayOfWeek: 'Понедельник',
         time: '',
         message: '',
@@ -46,7 +46,14 @@ export default function CreateScheduleModal({ onTaskCreated }) {
             ...prevData,
             [name]: value,
         }))
-        console.log(`Updated ${name}:`, value)
+    }
+
+    const handleWebhookChange = (event) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            webhookUrl: event.target.value,
+        }))
+        console.log(`Updated webhookUrl:`, event.target.value)
     }
 
     const handleSubmit = async (e) => {
@@ -119,7 +126,7 @@ export default function CreateScheduleModal({ onTaskCreated }) {
                                 id="webhookUrl"
                                 name="webhookUrl"
                                 value={formData.webhookUrl}
-                                onChange={handleChange}
+                                onChange={handleWebhookChange}
                                 label="Рабочее пространство"
                                 required
                             >

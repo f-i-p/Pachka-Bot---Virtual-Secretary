@@ -3,7 +3,8 @@ const { Schedule } = require("../../db/models");
 const { verifyAccessToken } = require("../../middlewares/verifyToken");
 
 router.post("/", verifyAccessToken, async (req, res) => {
-  const { channelId, dayOfWeek, time, message, frequency } = req.body;
+  const { channelId, webhookUrl, dayOfWeek, time, message, frequency } =
+    req.body;
 
   if (!(channelId && dayOfWeek && time && message && frequency)) {
     return res.status(400).json({ message: "All fields are required" });
@@ -12,6 +13,7 @@ router.post("/", verifyAccessToken, async (req, res) => {
   try {
     const newSchedule = await Schedule.create({
       channelId,
+      webhookUrl,
       dayOfWeek,
       time,
       message,
@@ -38,7 +40,8 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/:id", verifyAccessToken, async (req, res) => {
-  const { channelId, dayOfWeek, time, message, frequency } = req.body;
+  const { channelId, webhookUrl, dayOfWeek, time, message, frequency } =
+    req.body;
   const { id } = req.params;
 
   if (!(channelId && dayOfWeek && time && message && frequency)) {
@@ -52,6 +55,7 @@ router.put("/:id", verifyAccessToken, async (req, res) => {
     }
 
     schedule.channelId = channelId;
+    schedule.webhookUrl = webhookUrl;
     schedule.dayOfWeek = dayOfWeek;
     schedule.time = time;
     schedule.message = message;
