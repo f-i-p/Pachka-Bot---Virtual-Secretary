@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const express = require('express');
 const apiRouter = require('./routers/api.router');
-const { startSchedules } = require('../utils/scheduler')
+const scheduleTasks = require('../utils/scheduler')
 
 const app = express();
 const { PORT } = process.env;
@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-startSchedules();
+scheduleTasks();
 
 app.use('/api/v1', apiRouter);
 

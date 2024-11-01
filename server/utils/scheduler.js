@@ -1,47 +1,61 @@
-// scheduler.js
-const cron = require('node-cron')
-const { Schedule } = require('../db/models')
-// const { sendMessage } = require('./helpers/apiHelper'); - хелпер от Леры
+const { Schedule } = require('../db/models');
+const cron = require('node-cron');
+const axios = require('axios');
 
-const startSchedules = async () => {
-    const schedules = await Schedule.findAll()
+const frequencyToCron = (frequency) => {
+    switch (frequency) {
+      case 'every 5 seconds': return '*/5 * * * * *';
+      case 'every 30 seconds': return '*/30 * * * * *';
+      case 'hourly': return '0 * * * *';
+      case 'daily': return '0 0 * * *';
+      case 'monthly': return '0 0 1 * *';
+      case 'yearly': return '0 0 1 1 *';
+      default: throw new Error(`Unsupported frequency: ${frequency}`);
+    }
+  };
 
-    schedules.forEach((schedule) => {
-        const { channelId, dayOfWeek, time, message, frequency } = schedule
-        const [hour, minute] = time.split(':')
+const sendUserMessage = async (message) => {
+  const webhookUrl = "https://api.pachca.com/webhooks/01JBHCDSR8MK6Q5K11AEZ1MDQY";
+  const messageData = {
+    message: {
+      content: message,
+      files: [],
+    },
+  };
 
-        let cronExpression
+  try {
+    const response = await axios.post(webhookUrl, messageData);
+    console.log("Message sent:", response.data);
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
+};
 
-        if (frequency === 'weekly') {
-            cronExpression = `${minute} ${hour} * * ${dayOfWeek}`
-        } else if (frequency === 'monthly') {
-            cronExpression = `${minute} ${hour} 1 * *`
-        } else {
-            return
+const scheduleTasks = async () => {
+  const tasks = await Schedule.findAll();
+
+  tasks.forEach(task => {
+    try {
+      const cronExpression = frequencyToCron(task.frequency);
+      cron.schedule(cronExpression, async () => {
+        await sendUserMessage(task.message);
+        const nextRunDate = new Date();
+        switch (task.frequency) {
+          case 'every 5 seconds': nextRunDate.setSeconds(nextRunDate.getSeconds() + 5); break;
+          case 'every 30 seconds': nextRunDate.setSeconds(nextRunDate.getSeconds() + 30); break;
+          case 'hourly': nextRunDate.setHours(nextRunDate.getHours() + 1); break;
+          case 'daily': nextRunDate.setDate(nextRunDate.getDate() + 1); break;
+          case 'monthly': nextRunDate.setMonth(nextRunDate.getMonth() + 1); break;
+          case 'yearly': nextRunDate.setFullYear(nextRunDate.getFullYear() + 1); break;
         }
 
-        cron.schedule(
-            cronExpression,
-            () => {
-                //   sendMessage(channelId, message);
-                console.log(channelId, message)
-                updateNextRunDate(schedule)
-            },
-            {
-                timezone: 'Europe/Moscow',
-            }
-        )
+        await task.update({ next_run_date: nextRunDate });
+        console.log(`Next run for "${task.message}" scheduled at ${nextRunDate}`);
+      });
+    } catch (error) {
+      console.error(`Failed to schedule task "${task.message}":`, error);
+    }
+  });
+};
 
-        console.log(
-            `Scheduled message: "${message}" for frequency: "${frequency}"`
-        )
-    })
-}
-
-const updateNextRunDate = async (schedule) => {
-    const now = new Date()
-    schedule.next_run_date = now
-    await schedule.save()
-}
-
-module.exports = { startSchedules }
+module.exports = scheduleTasks
