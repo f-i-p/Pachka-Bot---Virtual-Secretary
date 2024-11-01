@@ -7,14 +7,45 @@ import { TextField, Button, Typography, Box, Container, Alert } from '@mui/mater
 export default function AuthForm({ title, type = 'signin', setUser }) {
   const [inputs, setInputs] = useState({});
   const [error, setError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
 
   const changeHandler = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFieldErrors((prev) => ({ ...prev, [e.target.name]: '' }));
+  };
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!inputs.email) {
+      errors.email = 'Введите email';
+    }
+    if (!inputs.password) {
+      errors.password = 'Введите пароль';
+    }
+
+    if (type === 'signup') {
+      if (inputs.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(inputs.email)) {
+        errors.email = 'Некорректный email';
+      }
+      if (inputs.password && inputs.password.length < 8) {
+        errors.password = 'Пароль должен быть не менее 8 символов';
+      }
+      if (!inputs.name || inputs.name.trim().length < 2) {
+        errors.name = 'Имя пользователя должно содержать не менее 2 символов';
+      }
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setError(null);
+
+    if (!validateForm()) return;
 
     try {
       const response = await axiosInstance.post(`/auth/${type}`, inputs);
@@ -25,7 +56,6 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
     } catch (error) {
       console.error(error);
       if (error.response) {
-
         const { status, data } = error.response;
 
         if (status === 400) {
@@ -85,7 +115,8 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
                 autoComplete="email"
                 autoFocus
                 value={inputs?.email || ''}
-                sx={{ width: '100%' }}
+                error={Boolean(fieldErrors.email)}
+                helperText={fieldErrors.email}
               />
               <TextField
                 onChange={changeHandler}
@@ -99,7 +130,8 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
                 id="password"
                 autoComplete="current-password"
                 value={inputs?.password || ''}
-                sx={{ width: '100%' }}
+                error={Boolean(fieldErrors.password)}
+                helperText={fieldErrors.password}
               />
             </>
           )}
@@ -115,7 +147,8 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
                 label="Имя пользователя"
                 id="name"
                 value={inputs?.name || ''}
-                sx={{ width: '100%' }}
+                error={Boolean(fieldErrors.name)}
+                helperText={fieldErrors.name}
               />
               <TextField
                 onChange={changeHandler}
@@ -128,7 +161,8 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
                 name="email"
                 autoComplete="email"
                 value={inputs?.email || ''}
-                sx={{ width: '100%' }}
+                error={Boolean(fieldErrors.email)}
+                helperText={fieldErrors.email}
               />
               <TextField
                 onChange={changeHandler}
@@ -142,7 +176,8 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
                 id="password"
                 autoComplete="current-password"
                 value={inputs?.password || ''}
-                sx={{ width: '100%' }}
+                error={Boolean(fieldErrors.password)}
+                helperText={fieldErrors.password}
               />
             </>
           )}
