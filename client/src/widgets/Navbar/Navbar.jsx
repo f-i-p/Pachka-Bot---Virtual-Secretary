@@ -13,7 +13,7 @@ export default function Navbar({ user, setUser }) {
     if (response.status === 200) {
       setUser({});
       setAccessToken('');
-      navigate('/');
+      navigate('/signin');
     }
   };
 
