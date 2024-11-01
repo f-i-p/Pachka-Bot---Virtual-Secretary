@@ -32,6 +32,9 @@ module.exports = {
                 type: Sequelize.DATE,
                 allowNull: true,
             },
+            webhookUrl: {
+                type: Sequelize.STRING,
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

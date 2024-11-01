@@ -1,25 +1,25 @@
-"use strict";
-const { hashSync } = require("bcrypt");
+'use strict'
+const { hashSync } = require('bcrypt')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert(
-      "Users",
-      [
-        {
-          email: "111@111",
-          name: "Эльбрус",
-          password: hashSync("111", 10),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    );
-  },
+    async up(queryInterface, Sequelize) {
+        await queryInterface.bulkInsert(
+            'Users',
+            [
+                {
+                    email: 'marta@yahoo.com',
+                    name: 'Марта',
+                    password: hashSync('12345678', 10),
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ],
+            {}
+        )
+    },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Users", null, {});
-  },
-};
+    async down(queryInterface, Sequelize) {
+        await queryInterface.bulkDelete('Users', null, {})
+    },
+}

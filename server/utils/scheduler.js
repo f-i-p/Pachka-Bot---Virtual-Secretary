@@ -72,7 +72,10 @@ const scheduleTasks = async () => {
                 )
             })
         } catch (error) {
-            console.error(`Ошибка планировщика задачи "${task.message}":`, error)
+            console.error(
+                `Ошибка планировщика задачи "${task.message}":`,
+                error
+            )
         }
     })
 }
