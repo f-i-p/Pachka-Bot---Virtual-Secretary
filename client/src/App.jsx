@@ -11,7 +11,7 @@ import axiosInstance, { setAccessToken } from './axiosInstance';
 import ProtectedRoute from './components/HOC/ProtectedRoute';
 
 function App() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axiosInstance.get(`/token/refresh`)
@@ -34,7 +34,7 @@ function App() {
       children: [
         {
           path: '/',
-          element: user ? <Navigate to="/main" /> : <SigninPage setUser={setUser} />,
+          element: user ? <Navigate to="/main" /> : <Navigate to="/signin" />,
         },
         {
           path: '/signin',

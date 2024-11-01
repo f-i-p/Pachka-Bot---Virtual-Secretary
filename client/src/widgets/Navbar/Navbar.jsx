@@ -11,8 +11,15 @@ export default function Navbar({ user, setUser }) {
       `/auth/logout`
     );
     if (response.status === 200) {
-      setUser({});
+      setUser(null);
       setAccessToken('');
+      navigate('/signin');
+    }
+  };
+
+  const handleHomeClick = (e) => {
+    if (!user) {
+      e.preventDefault();
       navigate('/signin');
     }
   };
@@ -20,7 +27,7 @@ export default function Navbar({ user, setUser }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.left}>
-        <Link to='/'><img src={homeIcon} alt="На главную" height="35"/></Link>
+        <Link to='/' onClick={handleHomeClick}><img src={homeIcon} alt="На главную" height="35"/></Link>
       </div>
       <div className={styles.right}>
         {user?.email ? (
