@@ -13,10 +13,11 @@ import {
 } from '@mui/material'
 import axiosInstance from '../../axiosInstance'
 
-export default function CreateScheduleModal() {
+export default function CreateScheduleModal({ onTaskCreated }) {
     const [open, setOpen] = useState(false)
     const [channels, setChannels] = useState([])
     const [formData, setFormData] = useState({
+        channelId: 1,
         webhookUrl: '',
         dayOfWeek: 'Понедельник',
         time: '',
@@ -47,8 +48,8 @@ export default function CreateScheduleModal() {
         e.preventDefault()
         try {
             await axiosInstance.post('/schedules', formData)
-            alert('Таск успешно создан')
             handleClose()
+            onTaskCreated() 
         } catch (error) {
             console.error('Ошибка при создании таска:', error)
         }
